@@ -27,18 +27,17 @@ class MoviesController < ApplicationController
    
     session[:sort] = @sort
     
-    @ratings_to_show = params[:ratings] || session[:ratings]  || {}
+    @ratings_to_show = params[:ratings] || session[:ratings]  || Hash[@all_ratings.map {|rating| [rating, 1]}]
     
     
-    #if params[:ratings] != session[:ratings]
+    if params[:ratings] != session[:ratings]
       session[:ratings] = @ratings_to_show
-    #end
+      redirect_to movies_path("ratings" => @ratings_to_show, "sort" => @sort)
+    end
     
     
     @movies = Movie.with_ratings(@ratings_to_show.keys).order(@sort)
     
-    puts session
-    puts params
   end
 
   def new
