@@ -19,7 +19,7 @@ class MoviesController < ApplicationController
         @sort = "release_date"
       end
     end
-    
+     
 
     
     @all_ratings = Movie.all_ratings
