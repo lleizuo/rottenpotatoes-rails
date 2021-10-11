@@ -8,21 +8,36 @@ class MoviesController < ApplicationController
 
   def index
     
-    if params[:sort] == "title"
+    sort_col = params[:sort] || session[:sort]
+    
+    if  sort_col  == "title"
       @title_state = "hilite bg-warning"
       @sort = "title"
+    else
+      if sort_col == "release_date"
+        @release_state = "hilite bg-warning"
+        @sort = "release_date"
+      end
     end
     
-    if params[:sort] == "release_date"
-      @release_state = "hilite bg-warning"
-      @sort = "release_date"
-    end
+
     
     @all_ratings = Movie.all_ratings
-    @ratings_to_show = params[:ratings] || {}
+    
+   
+    session[:sort] = @sort
+    
+    @ratings_to_show = params[:ratings] || session[:ratings]  || {}
+    
+    
+    #if params[:ratings] != session[:ratings]
+      session[:ratings] = @ratings_to_show
+    #end
+    
+    
     @movies = Movie.with_ratings(@ratings_to_show.keys).order(@sort)
     
-    
+    puts session
     puts params
   end
 
