@@ -7,9 +7,23 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
+    if params[:sort] == "title"
+      @title_state = "hilite bg-warning"
+      @sort = "title"
+    end
+    
+    if params[:sort] == "release_date"
+      @release_state = "hilite bg-warning"
+      @sort = "release_date"
+    end
+    
     @all_ratings = Movie.all_ratings
     @ratings_to_show = params[:ratings] || {}
-    @movies = Movie.with_ratings(@ratings_to_show.keys)
+    @movies = Movie.with_ratings(@ratings_to_show.keys).order(@sort)
+    
+    
+    puts params
   end
 
   def new

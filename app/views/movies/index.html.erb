@@ -5,6 +5,9 @@
 
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
   Include:
+
+  <%= hidden_field_tag 'sort', @sort %>
+
   <% @all_ratings.each do |rating| %>
     <div class="form-check  form-check-inline">
       <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
@@ -17,9 +20,13 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <%= content_tag :th, :class => @title_state do %>
+        <%= link_to 'Movie Title', movies_path(:sort => "title", :ratings => @ratings_to_show), id: 'title_header' %>
+      <% end %>
       <th>Rating</th>
-      <th>Release Date</th>
+      <%= content_tag :th, :class => @release_state do %>
+        <%= link_to 'Release Date', movies_path(:sort => "release_date", :ratings => @ratings_to_show), id: 'release_date_header' %>
+      <% end %>
       <th>More Info</th>
     </tr>
   </thead>
